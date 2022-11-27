@@ -1,0 +1,9 @@
+---
+- name: Importing playbook 01
+  import_playbook: plays/01-update_vm.yml
+
+- name: Importing playbook 02
+  import_playbook: plays/02-add_users.yml
+
+- name: Importing playbook 03
+  import_playbook: plays/02-install_lamp.yml

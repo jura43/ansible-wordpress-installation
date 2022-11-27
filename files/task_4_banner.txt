@@ -1,0 +1,2 @@
+Welcome to test.test server.
+This host has 5 vCPUs and 5 GB of RAM available.

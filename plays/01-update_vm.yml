@@ -1,0 +1,30 @@
+---
+- name:  Playbook for updating VM
+  hosts: wordpress
+  gather_facts: no
+  tasks:
+  - name: Checking for available updates
+    yum:
+      list: updates
+      update_cache: true
+    register: yumoutput
+
+  - name: List of packages with available updates
+    debug:
+      msg: "{{ item.name }}"
+    when: yumoutput.results | length > 0
+    loop: "{{ yumoutput.results }}"
+    loop_control:
+      label: "{{ item.name }}"
+
+  - name: There are no packages to update
+    debug:
+      msg: There are no packges to update
+    when: yumoutput.results | length < 1
+
+  - name: Updating VM
+    dnf:
+      name: '*'
+      state: latest
+      allowerasing: true
+    when: yumoutput.results | length > 0
