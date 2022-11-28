@@ -1,0 +1,8 @@
+---
+vgname: wordpress-vg
+lvname:  wordpress-lv
+device: /dev/nvme0n2
+size: +100%FREE
+dirname:  /var/www/html
+perm:
+selinux:

@@ -1,0 +1,31 @@
+---
+- name: Configuring LVM
+  hosts: wordpress
+  gather_facts: no
+  vars_files:
+    - ../vars/vars.yml
+
+  tasks:
+    - name: Creating volume group
+      lvg:
+        vg: "{{ vgname }}"
+        pvs: "{{ device }}"
+        pesize: 32
+
+    - name: Creating logical volume
+      lvol:
+        vg: "{{ vgname }}"
+        lv: "{{ lvname }}"
+        size: "{{ size }}"
+
+    - name: Creating filesystem
+      filesystem:
+        fstype: ext4
+        dev: "/dev/{{ vgname }}/{{ lvname }}"
+
+    - name: Mounting LV
+      mount:
+        path: "{{ dirname }}"
+        fstype: ext4
+        src: "/dev/{{ vgname }}/{{ lvname }}"
+        state: mounted
