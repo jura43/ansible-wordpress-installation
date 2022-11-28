@@ -10,3 +10,9 @@
 
 - name: Importing playbook 04
   import_playbook: plays/04-banner_motd.yml
+
+- name: Importing playbook 05
+  import_playbook: plays/05-php_config.yml
+
+ - name: Importing playbook 06
+   import_playbook: plays/06-firewalld.yml

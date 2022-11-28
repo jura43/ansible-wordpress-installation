@@ -1,0 +1,24 @@
+---
+- name: Configuring firewalld
+  hosts: wordpress
+  gather_facts: no
+  vars:
+    services:
+      - httpd
+      - mariadb
+
+  tasks:
+    - name: Adding public interface to public zone
+      ansible.posix.firewalld:
+        zone: public
+        interface: ens160
+        permanent: yes
+        state: enabled
+
+    - name: Configuring firewalld for MariaDB and Apache
+      ansible.posix.firewalld:
+        zone: public
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+      with_items: "{{ services }}"
