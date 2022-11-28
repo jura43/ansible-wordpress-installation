@@ -6,4 +6,7 @@
   import_playbook: plays/02-add_users.yml
 
 - name: Importing playbook 03
-  import_playbook: plays/02-install_lamp.yml
+  import_playbook: plays/03-install_lamp.yml
+
+- name: Importing playbook 04
+  import_playbook: plays/04-banner_motd.yml

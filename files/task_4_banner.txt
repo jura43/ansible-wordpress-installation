@@ -1,2 +1,2 @@
-Welcome to test.test server.
-This host has 5 vCPUs and 5 GB of RAM available.
+Welcome to {{ ansible_facts['fqdn'] }} server.
+This host has {{ ansible_facts['processor_vcpus'] }} vCPUs and {{ ansible_facts['memfree_mb']/1000 }} GB of RAM available.

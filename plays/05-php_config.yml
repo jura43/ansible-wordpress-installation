@@ -1,0 +1,31 @@
+---
+- name: Modifying PHP configuration
+  hosts: wordpress
+  gather_facts: no
+  vars:
+    config:
+      - key: memory_limit
+        value: memory_limit = 512M
+      - key: post_max_size
+        value: post_max_size = 256M
+      - key: upload_max_filesize
+        value: upload_max_filesize = 256M
+      - key: max_execution_time
+        value: max_execution_time = 30
+      - key: max_input_time
+        value: max_input_time = 1000
+      - key: session.cookie_lifetime
+        value: session.cookie_lifetime = 1440
+      - key: session.cookie_secure
+        value: session.cookie_secure = 1
+      - key: session.cookie_httponly
+        value: session.cookie_httponly = 1
+
+  tasks:
+    - name: Configuring /etc/php.ini
+      lineinfile:
+        path: /etc/php.ini
+        state: present
+        regexp: "{{ item.key }}"
+        line: "{{ item.value }}"
+      with_items: "{{ config }}"
