@@ -1,0 +1,13 @@
+---
+- name: Allowing public IP address to access public zone
+  hosts: wordpress
+  gather_facts: no
+
+  tasks:
+    - name: Configuring firewalld to allow public IP addresses
+      ansible.posix.firewalld:
+        zone: public
+        source: "{{ item }}"
+        permanent: yes
+        state: enabled
+      with_lines: cat ../files/task_7.txt

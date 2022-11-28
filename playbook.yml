@@ -16,3 +16,6 @@
 
  - name: Importing playbook 06
    import_playbook: plays/06-firewalld.yml
+
+- name: Importing playbook 07
+  import_playbook: plays/07-publicIP.yml
