@@ -1,0 +1,49 @@
+---
+- name: Configuring MariaDB
+  hosts: wordpress
+  gather_facts: no
+  vars_files:
+    - ../secrets.yml
+  tasks:
+    - name: Start and enable MariaDB
+      service:
+        name: mariadb
+        state: started
+        enabled: true
+
+    - name: Making sure PyMySQL package is installed
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Checking if MariaDB has been initialized
+      community.mysql.mysql_info:
+        login_user: root
+      register: check
+      ignore_errors: true
+
+    - name: Installing MariaDB
+      ansible.builtin.expect:
+        command: mysql_secure_installation
+        responses:
+          'Enter current password for root': ''
+          'Set root password': 'y'
+          'New password': "{{ root }}"
+          'Re-enter new password': "{{ root }}"
+          'Remove anonymous users': 'y'
+          'Disallow root login remotely': 'n'
+          'Remove test database': 'y'
+          'Reload privilege tables now': 'y'
+        timeout: 1
+      register: mariadb
+      when: check.failed == false
+
+    - name: Creating users
+      community.mysql.mysql_user:
+        login_user: root
+        login_password: "{{ root }}"
+        name: "{{ item }}"
+        password: redhat
+        state: present
+        priv: '*.*:ALL'
+      with_lines: cat ../files/task_8_users.txt
