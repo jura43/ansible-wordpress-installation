@@ -4,8 +4,9 @@
   gather_facts: no
   vars:
     services:
-      - httpd
-      - mariadb
+      - http
+      - https
+      - mysql
 
   tasks:
     - name: Adding public interface to public zone
@@ -22,3 +23,8 @@
         permanent: yes
         state: enabled
       with_items: "{{ services }}"
+
+    - name: Reloading firewalld
+      service:
+        name: firewalld
+        state: reloaded

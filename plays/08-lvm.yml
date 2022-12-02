@@ -29,3 +29,12 @@
         fstype: ext4
         src: "/dev/{{ vgname }}/{{ lvname }}"
         state: mounted
+
+    - name: Setting SELinux context
+      sefcontext:
+        target: '/var/www/html(/.*)?'
+        setype: httpd_sys_rw_content_t
+        state: present
+
+    - name: Applying new SELinux file context to filesystem
+      command: restorecon -Rv /var/www/html

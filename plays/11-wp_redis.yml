@@ -1,0 +1,6 @@
+---
+- name: Installing WordPress and Redis using role
+  hosts: wordpress
+  gather_facts: no
+  roles:
+    - role: '/home/jura/ansible-wordpress-installation/roles/wordpress_redis'

@@ -1,0 +1,4 @@
+---
+# tasks file for wordpress-redis
+- include_tasks: wordpress.yml
+#- include_tasks: redis.yml

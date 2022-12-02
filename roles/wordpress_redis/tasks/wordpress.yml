@@ -1,0 +1,33 @@
+---
+- name: Creating wordpress database
+  community.mysql.mysql_db:
+    login_user: root
+    login_password: redhat
+    name: wordpress
+    state: present
+
+- name: Downloading and untaring WordPress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /tmp
+    remote_src: yes
+  delegate_to: localhost
+
+- name: Copying WordPress to remote host
+  synchronize:
+    src: /tmp/wordpress/
+    dest: /var/www/html/
+
+- name: Setting premissions on WordPress files
+  file:
+    path: /var/www/html
+    owner: apache
+    group: apache
+    state: directory
+    mode: '0755'
+    recurse: true
+
+- name: Copying WordPress configuration
+  copy:
+    src: ../files/wp-config.php
+    dest: /var/www/html/wordpress
