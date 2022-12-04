@@ -4,7 +4,7 @@
   tasks:
     - name: Configuring banner
       template:
-        src: ../files/task_4_banner.txt
+        src: ../files/task_4_banner.j2
         dest: /etc/banner
 
     - name: Configuring MOTD
