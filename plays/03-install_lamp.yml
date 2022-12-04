@@ -3,26 +3,12 @@
   hosts: wordpress
   gather_facts: no
   vars:
-#    packages: []
-    lamp:
-      - httpd
-      - mariadb
-      - mariadb-server
-      - yum-utils
-      - php
-      - php-mysqlnd
-      - php-pdo
-      - php-gd
-      - php-mbstring
-      - php-fpm
-      - php-opcache
-      - php-xml
-
+    packages: []
   tasks:
-#  - name: Loading list of PHP packages
-#    set_fact:
-#      packages: "{{ packages + [item] }}"
-#    with_lines: cat ../files/task_3.txt
+  - name: Loading list of LAMP packages
+    set_fact:
+      packages: "{{ packages + [item] }}"
+    with_lines: cat ../files/task_3.txt
 
   - name: Changing PHP stream
     command: "{{ item }}"
@@ -30,12 +16,7 @@
       - yum module reset php -y
       - yum module enable php:7.4 -y
 
-  - name: Installing LAMP
+  - name: Installing LAMP packages
     yum:
-      name: "{{ lamp }}"
+      name: "{{ packages }}"
       state: latest
-
-#  - name: Installing PHP modules
-#    yum:
-#      name: "{{ packages }}"
-#      state: latest
