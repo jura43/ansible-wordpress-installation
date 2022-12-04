@@ -1,4 +1,55 @@
 ---
+- name: Loading variables
+  include_vars: '../vars/main.yml'
+
+- name: Installing PHP
+  yum:
+    name: "{{ packages }}"
+    state: latest
+
+- name: Starting and enabling Apache and MariaDB
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop: "{{ service }}"
+
+- name: Installing PyMySQL package
+  pip:
+    name: pymysql
+    state: present
+
+- name: Checking if MariaDB has been initialized
+  community.mysql.mysql_info:
+    login_user: root
+  register: check
+  ignore_errors: true
+
+- name: Installing MariaDB
+  ansible.builtin.expect:
+    command: mysql_secure_installation
+    responses:
+      'Enter current password for root': ''
+      'Set root password': 'y'
+      'New password': 'redhat'
+      'Re-enter new password': 'redhat'
+      'Remove anonymous users': 'y'
+      'Disallow root login remotely': 'n'
+      'Remove test database': 'y'
+      'Reload privilege tables now': 'y'
+    timeout: 1
+  register: mariadb
+  when: check.failed == false
+
+- name: Creating wordpress user
+  community.mysql.mysql_user:
+    login_user: root
+    login_password: redhat
+    name: wordpress
+    password: redhat
+    state: present
+    priv: 'wordpress.*:ALL'
+
 - name: Creating wordpress database
   community.mysql.mysql_db:
     login_user: root
@@ -18,6 +69,11 @@
     src: /tmp/wordpress/
     dest: /var/www/html/
 
+- name: Copying WordPress configuration
+  copy:
+    src: ../files/wp-config.php
+    dest: /var/www/html/wordpress
+
 - name: Setting premissions on WordPress files
   file:
     path: /var/www/html
@@ -26,8 +82,3 @@
     state: directory
     mode: '0755'
     recurse: true
-
-- name: Copying WordPress configuration
-  copy:
-    src: ../files/wp-config.php
-    dest: /var/www/html/wordpress

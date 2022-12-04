@@ -3,3 +3,21 @@ config:
     value: supervised systemd
   - key: maxmemory
     value: maxmemory 256mb
+
+packages:
+  - httpd
+  - mariadb
+  - mariadb-server
+  - yum-utils
+  - php
+  - php-mysqlnd
+  - php-pdo
+  - php-gd
+  - php-mbstring
+  - php-fpm
+  - php-opcache
+  - php-xml
+
+service:
+  - httpd
+  - mariadb
