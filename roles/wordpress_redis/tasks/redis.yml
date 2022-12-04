@@ -1,0 +1,25 @@
+---
+- name: Loading variables
+  include_vars: '../vars/main.yml'
+
+- name: Installing Redis
+  yum:
+    name: redis
+    state: latest
+
+- name: Changing Redis configuration
+  lineinfile:
+    path: /etc/redis.conf
+    state: present
+    regexp: "{{ item.key }}"
+    line:  "{{ item.value }}"
+  with_items: "{{ config }}"
+
+- name: Starting and enabling Redis service
+  service:
+    name: redis
+    state: restarted
+    enabled: true
+
+- name: Adding hash key to Redis
+  shell: redis-cli hset student name jurica surname slovinac

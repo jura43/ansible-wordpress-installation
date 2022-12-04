@@ -1,0 +1,5 @@
+config:
+  - key: supervised
+    value: supervised systemd
+  - key: maxmemory
+    value: maxmemory 256mb
