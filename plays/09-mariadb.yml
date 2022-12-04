@@ -5,6 +5,13 @@
   vars_files:
     - ../secrets.yml
   tasks:
+    - name: Installing MariaDB
+      yum:
+        name:
+          - mariadb
+          - mariadb-server
+        state: latest
+
     - name: Start and enable MariaDB
       service:
         name: mariadb
@@ -43,7 +50,7 @@
         login_user: root
         login_password: "{{ root }}"
         name: "{{ item }}"
-        password: redhat
+        password: "{{ wordpress }}"
         state: present
         priv: '*.*:ALL'
       with_lines: cat ../files/task_8_users.txt
