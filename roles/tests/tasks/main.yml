@@ -1,2 +1,31 @@
 ---
 # tasks file for tests
+#Testing components from task 1
+- name: Getting list of packages to update
+  yum:
+    list: updates
+    update_cache: true
+  register: yumoutput
+
+- name: Checking if VM is up-to-date
+  debug:
+    msg: "{% if yumoutput.results is defined and yumoutput.results|length > 0 %}VM is not updated{% else %}VM is updated{% endif %}"
+
+#Testing components from task 2
+- name: Getting user list
+  getent:
+    database: passwd
+
+- name: Checking if users admin and readonly exist
+  debug:
+    msg: "{% if getent_passwd.admin is defined and getent_passwd.readonly is defined %}Users exist{% else %}Users are not created{% endif %}"
+
+#Testing components from task 3
+- name: Getting list of installed packages
+  yum:
+    list: installed
+  register: yumoutput
+
+- name: Checking if LAMP is installed
+  debug:
+    msg: "{{yumoutput.results}}"

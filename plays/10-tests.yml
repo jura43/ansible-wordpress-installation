@@ -1,0 +1,6 @@
+---
+- name: Testing previously installed components
+  hosts: wordpress
+  gather_facts: no
+  roles:
+    - role: '/home/jura/ansible-wordpress-installation/roles/tests'

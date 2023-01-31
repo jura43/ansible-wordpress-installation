@@ -26,8 +26,8 @@
 - name: Importing playbook 09
   import_playbook: plays/09-mariadb.yml
 
-#- name: Importing playbook 10
-#  import_playbook: plays/07-publicIP.yml
+- name: Importing playbook 10
+  import_playbook: plays/10-tests.yml
 
-#- name: Importing playbook 11
-#  import_playbook: plays/07-publicIP.yml
+- name: Importing playbook 11
+  import_playbook: plays/11-wp_redis.yml

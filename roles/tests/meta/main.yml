@@ -1,7 +1,7 @@
 galaxy_info:
-  author: your name
-  description: your role description
-  company: your company (optional)
+  author: Jurica Slovinac
+  description: Role for testing previously installed components
+  company: Advanced DevOps
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
